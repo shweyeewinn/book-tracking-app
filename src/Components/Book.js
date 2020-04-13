@@ -24,8 +24,7 @@ const Book = ({ book, handleShelfChange }) => {
             style={{
               width: 128,
               height: 193,
-              backgroundImage: 'none',
-              backgroundColor: '#eeeded',
+              backgroundImage: `url("/images/default-cover.jpg")`,
             }}
           />
         )}
