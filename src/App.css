@@ -206,6 +206,13 @@ button:active {
   cursor: pointer;
 }
 
+.book-nofound p {
+  font-size: 1.4rem;
+  line-height: 2rem;
+  color: #333333;
+  font-weight: 600;
+}
+
 /* book cover */
 
 .book-cover {

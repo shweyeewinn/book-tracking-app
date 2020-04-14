@@ -5,94 +5,13 @@ import { withRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Book from './Book';
 
-const searchTerms = [
-  'android',
-  'art',
-  'artificial intelligence',
-  'astronomy',
-  'austen',
-  'baseball',
-  'basketball',
-  'bhagat',
-  'biography',
-  'brief',
-  'business',
-  'camus',
-  'cervantes',
-  'christie',
-  'classics',
-  'comics',
-  'cook',
-  'cricket',
-  'cycling',
-  'desai',
-  'design',
-  'development',
-  'digital marketing',
-  'drama',
-  'drawing',
-  'dumas',
-  'education',
-  'everything',
-  'fantasy',
-  'film',
-  'finance',
-  'first',
-  'fitness',
-  'football',
-  'future',
-  'games',
-  'gandhi',
-  'homer',
-  'horror',
-  'hugo',
-  'ibsen',
-  'journey',
-  'kafka',
-  'king',
-  'lahiri',
-  'larsson',
-  'learn',
-  'literary fiction',
-  'make',
-  'manage',
-  'marquez',
-  'money',
-  'mystery',
-  'negotiate',
-  'painting',
-  'philosophy',
-  'photography',
-  'poetry',
-  'production',
-  'programming',
-  'react',
-  'redux',
-  'river',
-  'robotics',
-  'rowling',
-  'satire',
-  'science fiction',
-  'shakespeare',
-  'singh',
-  'swimming',
-  'tale',
-  'thrun',
-  'time',
-  'tolstoy',
-  'travel',
-  'ultimate',
-  'virtual reality',
-  'web development',
-  'ios',
-];
-
 class SearchBooks extends Component {
   constructor(props) {
     super(props);
     this.state = {
       term: '',
       foundBooks: [],
+      notFound: false,
     };
   }
 
@@ -101,30 +20,27 @@ class SearchBooks extends Component {
     this.setState({
       term,
     });
-    //console.log(term);
     this.getFoundBooks(term);
   };
 
   getFoundBooks = async (term) => {
-    const query = term.trim().toLowerCase();
+    const query = term.trim();
     try {
-      if (query.length > 0 && searchTerms.includes(query)) {
-        const result = await BooksAPI.search(query);
-        if (result.error) {
-          this.setState({ foundBooks: result.items });
-        } else {
-          this.setState({ foundBooks: result });
-        }
+      const result = await BooksAPI.search(query);
+      if (result.error) {
+        this.setState({ foundBooks: result.items, notFound: true });
       } else {
-        this.setState({ foundBooks: [] });
+        this.setState({ foundBooks: result, notFound: false });
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
+      this.setState({ notFound: true });
     }
   };
 
   render() {
-    const { term, foundBooks } = this.state;
+    const { term, foundBooks, notFound } = this.state;
+
     const { handleShelfChange, allBooks } = this.props;
     return (
       <div className="search-books">
@@ -135,7 +51,7 @@ class SearchBooks extends Component {
           <div className="search-books-input-wrapper">
             <DebounceInput
               minLength={0}
-              debounceTimeout={400}
+              debounceTimeout={300}
               type="text"
               placeholder="Search by title or author"
               value={term}
@@ -146,7 +62,7 @@ class SearchBooks extends Component {
 
         <div className="search-books-results">
           <ol className="books-grid">
-            {foundBooks &&
+            {!notFound ? (
               foundBooks.map((foundBook) => {
                 let result = allBooks.find((book) => book.id === foundBook.id);
                 result = result ? result : foundBook;
@@ -156,7 +72,12 @@ class SearchBooks extends Component {
                     <Book book={result} handleShelfChange={handleShelfChange} />
                   </li>
                 ) : null;
-              })}
+              })
+            ) : (
+              <div className="book-nofound">
+                <p>Books not found</p>
+              </div>
+            )}
           </ol>
         </div>
       </div>

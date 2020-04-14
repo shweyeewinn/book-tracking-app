@@ -15,8 +15,8 @@ const BookShelf = ({ books, title, handleShelfChange }) => {
               </li>
             ))
           ) : (
-            <div className="book-title">
-              <p>No Book on {title} shelf</p>
+            <div className="book-nofound">
+              <p>No book on {title} shelf</p>
             </div>
           )}
         </ol>
