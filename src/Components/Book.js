@@ -6,28 +6,22 @@ const Book = ({ book, handleShelfChange }) => {
     const shelf = e.target.value;
     handleShelfChange(shelf, book);
   };
+  const backgroundImage =
+    book.imageLinks && book.imageLinks.smallThumbnail
+      ? book.imageLinks.smallThumbnail
+      : '/images/default-cover.jpg';
+
   return (
     <div className="book">
       <div className="book-top">
-        {book.imageLinks && book.imageLinks.smallThumbnail ? (
-          <div
-            className="book-cover"
-            style={{
-              width: 128,
-              height: 193,
-              backgroundImage: `url(${book.imageLinks.smallThumbnail})`,
-            }}
-          />
-        ) : (
-          <div
-            className="book-cover"
-            style={{
-              width: 128,
-              height: 193,
-              backgroundImage: `url("/images/default-cover.jpg")`,
-            }}
-          />
-        )}
+        <div
+          className="book-cover"
+          style={{
+            width: 128,
+            height: 193,
+            backgroundImage: `url(${backgroundImage})`,
+          }}
+        />
 
         <div className="book-shelf-changer">
           <select value={book.shelf} onChange={(e) => onShelfChange(e, book)}>
