@@ -25,15 +25,15 @@ class SearchBooks extends Component {
 
   getFoundBooks = async (term) => {
     const query = term.trim();
-    try {
+    console.log('query', query);
+    if (query) {
       const result = await BooksAPI.search(query);
       if (result.error) {
         this.setState({ foundBooks: result.items, notFound: true });
       } else {
         this.setState({ foundBooks: result, notFound: false });
       }
-    } catch (error) {
-      //console.log(error);
+    } else {
       this.setState({ notFound: true });
     }
   };
@@ -64,8 +64,9 @@ class SearchBooks extends Component {
           <ol className="books-grid">
             {!notFound ? (
               foundBooks.map((foundBook) => {
-                let result = allBooks.find((book) => book.id === foundBook.id);
-                result = result ? result : foundBook;
+                let result =
+                  allBooks.find((book) => book.id === foundBook.id) ||
+                  foundBook;
                 result.shelf = result.shelf ? result.shelf : 'none';
                 return result ? (
                   <li key={result.id}>
