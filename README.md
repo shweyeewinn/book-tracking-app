@@ -7,7 +7,7 @@ This is a bookshelf app build with React. This app allows the users to
 
 ## Demo
 
-Project Demo can be viewed [here](https://www.loom.com/share/01f54acfd82943efa4ee752fa43da9f7).
+Project Demo can be viewed [here](https://www.loom.com/share/5142220b90e74667bde098d6033bd8c2).
 
 ## Features
 
